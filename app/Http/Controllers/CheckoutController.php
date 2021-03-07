@@ -106,65 +106,7 @@ class CheckoutController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function paypalCheckout(Request $request)
-    {
-        // Check race condition when there are less items available to purchase
-        if ($this->productsAreNoLongerAvailable()) {
-            return back()->withErrors('Sorry! One of the items in your cart is no longer avialble.');
-        }
-
-        $gateway = new \Braintree\Gateway([
-            'environment' => config('services.braintree.environment'),
-            'merchantId' => config('services.braintree.merchantId'),
-            'publicKey' => config('services.braintree.publicKey'),
-            'privateKey' => config('services.braintree.privateKey')
-        ]);
-
-        $nonce = $request->payment_method_nonce;
-
-        $result = $gateway->transaction()->sale([
-            'amount' => round(getNumbers()->get('newTotal') / 100, 2),
-            'paymentMethodNonce' => $nonce,
-            'options' => [
-                'submitForSettlement' => true
-            ]
-        ]);
-
-        $transaction = $result->transaction;
-
-        if ($result->success) {
-            $order = $this->addToOrdersTablesPaypal(
-                $transaction->paypal['payerEmail'],
-                $transaction->paypal['payerFirstName'].' '.$transaction->paypal['payerLastName'],
-                null
-            );
-
-            Mail::send(new OrderPlaced($order));
-
-            // decrease the quantities of all the products in the cart
-            $this->decreaseQuantities();
-
-            Cart::instance('default')->destroy();
-            session()->forget('coupon');
-
-            return redirect()->route('confirmation.index')->with('success_message', 'Thank you! Your payment has been successfully accepted!');
-        } else {
-            $order = $this->addToOrdersTablesPaypal(
-                $transaction->paypal['payerEmail'],
-                $transaction->paypal['payerFirstName'].' '.$transaction->paypal['payerLastName'],
-                $result->message
-            );
-
-            return back()->withErrors('An error occurred with the message: '.$result->message);
-        }
-    }
-
+    
     protected function addToOrdersTables($request, $error)
     {
         // Insert into orders table
