@@ -30,8 +30,8 @@
                 </div> <!-- end top-nav -->
                 <div class="hero container">
                     <div class="hero-copy">
-                        <h1>Laravel Ecommerce Demo</h1>
-                        <p>Includes multiple products, categories, a shopping cart and a checkout system with Stripe integration.</p>
+                        <h1>Laravel Ecommerce </h1>
+                        <p>you  can show your  product  sildes here.</p>
                         <div class="hero-buttons">
                         </div>
                     </div> <!-- end hero-copy -->
@@ -47,7 +47,7 @@
                 <div class="container">
                     <h1 class="text-center">Laravel Ecommerce</h1>
 
-                    <p class="section-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore vitae nisi, consequuntur illum dolores cumque pariatur quis provident deleniti nesciunt officia est reprehenderit sunt aliquid possimus temporibus enim eum hic lorem.</p>
+                    <p class="section-description">show  your product  shop  alert  or  any  hilighted  message  here</p>
 
                     <div class="text-center button-container">
                         <a href="#" class="button">Featured</a>
@@ -82,7 +82,7 @@
 
             </div> <!-- end featured-section -->
 
-            <blog-posts></blog-posts>
+        
 
             @include('partials.footer')
 
